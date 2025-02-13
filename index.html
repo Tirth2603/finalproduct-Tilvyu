@@ -6,7 +6,7 @@
   <title>Delivering the Project Before Deadline—Beating You This Time! 💌❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Mobile-first CSS */
+    /* CSS Reset & Mobile-first styles */
     * {
       margin: 0;
       padding: 0;
@@ -14,9 +14,9 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      line-height: 1.6;
-      background: #fff;
+      background: linear-gradient(135deg, #fff5f7, #ffc3a0);
       color: #333;
+      overflow-x: hidden;
       scroll-behavior: smooth;
     }
     header {
@@ -27,42 +27,64 @@
       background: rgba(255, 255, 255, 0.95);
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      animation: slideDown 1s ease-out;
+    }
+    @keyframes slideDown {
+      from { top: -100px; }
+      to { top: 0; }
     }
     nav {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       padding: 10px 0;
+      flex-wrap: wrap;
     }
     nav a {
       text-decoration: none;
-      color: #333;
+      color: #e91e63;
       font-weight: bold;
       padding: 8px 12px;
       transition: color 0.3s ease;
     }
     nav a:hover {
-      color: #e91e63;
+      color: #d81b60;
     }
     .section {
-      padding: 80px 20px 60px;
+      padding: 100px 20px 60px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .section h1 {
       font-family: 'Great Vibes', cursive;
       font-size: 3rem;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       color: #e91e63;
+      animation: popIn 1s ease-out;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
     }
     .section p {
       max-width: 800px;
-      margin: 0 auto 20px;
+      margin: 20px auto;
       font-size: 1.1rem;
+      line-height: 1.6;
     }
     .btn {
       background: #e91e63;
@@ -72,10 +94,12 @@
       border-radius: 25px;
       cursor: pointer;
       font-size: 1rem;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 20px;
     }
     .btn:hover {
       background: #d81b60;
+      transform: scale(1.05);
     }
     footer {
       text-align: center;
@@ -84,27 +108,85 @@
       color: #777;
       font-size: 0.9rem;
     }
+    /* Modal Popup */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 90%;
+      animation: zoomIn 0.5s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1500;
+    }
+    /* Advanced Emoji Popups */
+    .emoji-popup {
+      position: fixed;
+      font-size: 2rem;
+      animation: floatUp 3s linear forwards;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+    }
     /* Responsive styles for larger screens */
     @media (min-width: 768px) {
-      nav {
-        justify-content: center;
-      }
       nav a {
         margin: 0 15px;
       }
       .section {
-        padding: 100px 40px 80px;
+        padding: 120px 40px 80px;
       }
       .section h1 {
         font-size: 4rem;
       }
       .section p {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
     }
   </style>
 </head>
 <body>
+  <canvas id="confetti-canvas"></canvas>
   <header>
     <nav>
       <a href="#home">Home</a>
@@ -117,47 +199,47 @@
   </header>
   
   <!-- Home Section -->
-  <section id="home" class="section">
-    <h1>Welcome, My Love</h1>
-    <p>Hi Silvyu, this is my special gift—a little corner of our universe where every click and scroll sings the story of our endless love.</p>
-    <button class="btn" onclick="scrollToSection('our-story')">Discover Our Story</button>
+  <section id="home" class="section" style="animation-delay: 0.2s">
+    <h1>Welcome, My Love 💖</h1>
+    <p>Hi Silvyu, welcome to our little love universe where every scroll, click, and animated sparkle whispers our forever story. Every pixel here is a heartbeat of my endless love for you.</p>
+    <button class="btn" onclick="scrollToSection('our-story')">Discover Our Journey</button>
   </section>
   
   <!-- Our Story Section -->
-  <section id="our-story" class="section">
-    <h1>Our Beautiful Journey</h1>
-    <p>From the very first moment I saw you, I knew you were the one. Every promise, every hug, every kiss we’ve shared has woven a tapestry of memories that make our love unique. You are my guiding star and the home of my heart.</p>
+  <section id="our-story" class="section" style="animation-delay: 0.4s">
+    <h1>Our Beautiful Journey 🌹</h1>
+    <p>From that magical first glance to the promises we share every day, our love story is a masterpiece painted in the hues of passion and trust. Every heartbeat and every smile has built a tapestry of memories I treasure beyond measure.</p>
     <button class="btn" onclick="scrollToSection('promise-day')">Next: Promise Day</button>
   </section>
   
   <!-- Promise Day Section -->
-  <section id="promise-day" class="section">
-    <h1>Promise Day</h1>
-    <p>Remember that adorable Relationship Contract? Your heartfelt promises to love, support, and cherish me lit up my world. I signed it with every beat of my heart, vowing to stand by you forever.</p>
+  <section id="promise-day" class="section" style="animation-delay: 0.6s">
+    <h1>Promise Day 💌</h1>
+    <p>Your heartfelt Relationship Contract wasn’t just paper—it was the vow of forever. I signed it with every beat of my heart, promising to cherish, protect, and adore you endlessly. Your promises light up my life like stars in the night sky.</p>
     <button class="btn" onclick="scrollToSection('hug-day')">Next: Hug Day</button>
   </section>
   
   <!-- Hug Day Section -->
-  <section id="hug-day" class="section">
-    <h1>Hug Day</h1>
-    <p>Your award as "Employee of the Year" at Tilvyu &amp; Co. melted my heart. Every hug we share is a testament to the warmth and comfort you bring into my life.</p>
+  <section id="hug-day" class="section" style="animation-delay: 0.8s">
+    <h1>Hug Day 🤗</h1>
+    <p>Your "Employee of the Year" award at Tilvyu &amp; Co. melted my soul. Each hug from you feels like the warmest embrace, a sanctuary where your love wraps around me like the softest blanket on a chilly night.</p>
     <button class="btn" onclick="scrollToSection('kiss-day')">Next: Kiss Day</button>
   </section>
   
   <!-- Kiss Day Section -->
-  <section id="kiss-day" class="section">
-    <h1>Kiss Day</h1>
-    <p>Your Bonus Love Allowance for unlimited kisses filled my day with passion and sweetness. Every kiss is a promise of love, a spark that keeps our fire burning bright.</p>
+  <section id="kiss-day" class="section" style="animation-delay: 1s">
+    <h1>Kiss Day 😘</h1>
+    <p>Your Bonus Love Allowance for unlimited kisses is the sweetest promise I've ever received. Every kiss is a spark that ignites the fire of our passion and seals our eternal bond with a tender, loving touch.</p>
     <button class="btn" onclick="scrollToSection('valentine')">Next: Valentine's Surprise</button>
   </section>
   
   <!-- Valentine's Day Section -->
-  <section id="valentine" class="section">
-    <h1>Valentine's Surprise</h1>
-    <p>My dearest Silvyu, on this Valentine's Day, I had to beat you to it and surprise you first! I know I’ve been late replying to your lovely mails, and for that, I’m so, so sorry. Every word from you makes my heart soar.</p>
-    <p>You are my irreplaceable queen—lovable, cute, amazing, sexy, and the only one I will ever cherish. I promise to be loyal, to respect you, care for you, and love you more than anyone ever could. You are my first and my last; I can’t imagine life without you.</p>
-    <p>Thank you for every promise, every hug, every kiss, and every magical moment. I give you all that I have, all that I am, and a love that will last a lifetime.</p>
-    <p>Happy Valentine's Day, my love! I am forever yours, and I hope this surprise makes you feel as special and cherished as you truly are.</p>
+  <section id="valentine" class="section" style="animation-delay: 1.2s">
+    <h1>Valentine's Day Surprise 💘</h1>
+    <p>My dearest Silvyu, on this magical Valentine's Day, I had to beat you to it and surprise you first! Even though I may have replied late before, today I am here, overflowing with passion and a love that knows no bounds.</p>
+    <p>You are my irreplaceable queen—lovable, cute, breathtakingly amazing, sexy, and the one I will forever cherish. You are my first and my last, my anchor in every storm, and the joy in every sunrise.</p>
+    <p>Every mail from you fills me with immeasurable gratitude and makes me want to love you even more than yesterday. I promise to be loyal, respect you, care for you, and shower you with love like no one ever has. You are the one my heart beats for, the one who makes me whole, and I cannot imagine a life without you.</p>
+    <button class="btn" onclick="openModal()">Show My Heart 💖</button>
     <button class="btn" onclick="scrollToSection('home')">Back to Home</button>
   </section>
   
@@ -165,9 +247,121 @@
     <p>&copy; 2025 Tilvyu &amp; Co. | Crafted with endless love by Tithu</p>
   </footer>
   
+  <!-- Modal Popup -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>My Heart is All Yours 💓</h2>
+      <p>Every beat of my heart sings your name and every breath I take is a promise to love you forever. You are my dream come true, my constant joy, and the most precious part of my life.</p>
+      <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+  
   <script>
+    // Smooth scroll function
     function scrollToSection(sectionId) {
       document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+      // Trigger a random emoji popup on each scroll
+      showEmojiPopup();
+    }
+    
+    // Modal Functions
+    function openModal() {
+      document.getElementById('myModal').style.display = 'flex';
+    }
+    
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+    
+    // Confetti Animation using Canvas
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let confettiParticles = [];
+    const colors = ['#FFC107', '#E91E63', '#9C27B0', '#03A9F4', '#4CAF50', '#FF5722'];
+    
+    function randomRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    
+    function createConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confettiParticles.push({
+          x: randomRange(0, canvas.width),
+          y: randomRange(-canvas.height, 0),
+          r: randomRange(2, 6),
+          d: randomRange(10, 20),
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: randomRange(-10, 10),
+          tiltAngleIncrement: randomRange(0.05, 0.1),
+          tiltAngle: 0
+        });
+      }
+    }
+    
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiParticles.forEach((p, i) => {
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+        p.x += Math.sin(p.d);
+        p.tilt = Math.sin(p.tiltAngle) * 15;
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.r);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+    
+    function updateConfetti() {
+      for (let i = 0; i < confettiParticles.length; i++) {
+        let p = confettiParticles[i];
+        if (p.y > canvas.height) {
+          confettiParticles[i] = {
+            x: randomRange(0, canvas.width),
+            y: 0,
+            r: p.r,
+            d: p.d,
+            color: p.color,
+            tilt: p.tilt,
+            tiltAngleIncrement: p.tiltAngleIncrement,
+            tiltAngle: p.tiltAngle
+          };
+        }
+      }
+    }
+    
+    createConfetti();
+    function animateConfetti() {
+      drawConfetti();
+      requestAnimationFrame(animateConfetti);
+    }
+    animateConfetti();
+    
+    // Adjust canvas size on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    
+    // Emoji Popup function
+    function showEmojiPopup() {
+      const emojis = ['😍', '😘', '💖', '🌹', '💕', '🥰'];
+      const popup = document.createElement('div');
+      popup.classList.add('emoji-popup');
+      popup.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      popup.style.left = Math.random() * window.innerWidth + 'px';
+      popup.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.remove();
+      }, 3000);
     }
   </script>
 </body>
