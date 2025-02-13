@@ -18,50 +18,26 @@
       color: #333;
       overflow-x: hidden;
       scroll-behavior: smooth;
+      position: relative;
     }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      animation: slideDown 1s ease-out;
-    }
-    @keyframes slideDown {
-      from { top: -100px; }
-      to { top: 0; }
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px 0;
-      flex-wrap: wrap;
-    }
-    nav a {
-      text-decoration: none;
-      color: #e91e63;
-      font-weight: bold;
-      padding: 8px 12px;
-      transition: color 0.3s ease;
-    }
-    nav a:hover {
-      color: #d81b60;
-    }
+    /* Hide Navbar so she scrolls through each section */
+    header { display: none; }
+    
+    /* Section styles */
     .section {
-      padding: 100px 20px 60px;
+      padding: 120px 20px 80px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      position: relative;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 1s forwards;
     }
+    /* Delay animation for each section using inline style animation-delay */
     @keyframes fadeInUp {
       to {
         opacity: 1;
@@ -73,12 +49,13 @@
       font-size: 3rem;
       margin-bottom: 20px;
       color: #e91e63;
-      animation: popIn 1s ease-out;
+      animation: heartBeat 1.5s infinite;
     }
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); }
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(0.95); }
+      75% { transform: scale(1.05); }
     }
     .section p {
       max-width: 800px;
@@ -108,7 +85,7 @@
       color: #777;
       font-size: 0.9rem;
     }
-    /* Modal Popup */
+    /* Existing Modal Popup (Feel My Heart) */
     .modal {
       display: none;
       position: fixed;
@@ -122,8 +99,9 @@
       justify-content: center;
       align-items: center;
     }
-    .modal-content {
+    #myModal .modal-content {
       background: #fff;
+      color: #e91e63;
       padding: 30px;
       border-radius: 10px;
       text-align: center;
@@ -147,6 +125,72 @@
       text-decoration: none;
       cursor: pointer;
     }
+    /* Gift Modal with Bokeh Flower & Message */
+    .gift-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      flex-direction: column;
+    }
+    .gift-content {
+      text-align: center;
+      color: #e91e63;
+      font-family: 'Great Vibes', cursive;
+      position: relative;
+      width: 80%;
+      height: 80%;
+    }
+    /* Bokeh Container: Will hold a bunch of flower bokeh elements */
+    #bokehContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .bokeh-flower {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0;
+      animation: bokehAnim 3s linear forwards;
+    }
+    @keyframes bokehAnim {
+      0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1) rotate(20deg); }
+      100% { opacity: 0; transform: scale(1.5) rotate(40deg); }
+    }
+    /* Message Container */
+    #messageContainer {
+      display: none;
+      position: relative;
+      z-index: 10;
+    }
+    .gift-text {
+      font-size: 3rem;
+      animation: giftTextAnim 4s ease forwards;
+    }
+    @keyframes giftTextAnim {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(1.5); }
+    }
+    /* Kiss Emoji Falling Animation */
+    .kiss-emoji {
+      position: fixed;
+      font-size: 2rem;
+      z-index: 3100;
+    }
+    @keyframes kissFallAnim {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
     /* Confetti Canvas */
     #confetti-canvas {
       position: fixed;
@@ -157,7 +201,7 @@
       pointer-events: none;
       z-index: 1500;
     }
-    /* Advanced Emoji Popups */
+    /* Advanced Emoji & Heart Popups */
     .emoji-popup {
       position: fixed;
       font-size: 2rem;
@@ -170,11 +214,8 @@
     }
     /* Responsive styles for larger screens */
     @media (min-width: 768px) {
-      nav a {
-        margin: 0 15px;
-      }
       .section {
-        padding: 120px 40px 80px;
+        padding: 140px 40px 100px;
       }
       .section h1 {
         font-size: 4rem;
@@ -186,74 +227,88 @@
   </style>
 </head>
 <body>
+  <!-- Confetti Canvas -->
   <canvas id="confetti-canvas"></canvas>
-  <header>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#our-story">Our Story</a>
-      <a href="#promise-day">Promise Day</a>
-      <a href="#hug-day">Hug Day</a>
-      <a href="#kiss-day">Kiss Day</a>
-      <a href="#valentine">Valentine's</a>
-    </nav>
-  </header>
   
   <!-- Home Section -->
   <section id="home" class="section" style="animation-delay: 0.2s">
     <h1>Welcome, My Love 💖</h1>
-    <p>Hi Silvyu, welcome to our little love universe where every scroll, click, and animated sparkle whispers our forever story. Every pixel here is a heartbeat of my endless love for you.</p>
-    <button class="btn" onclick="scrollToSection('our-story')">Discover Our Journey</button>
+    <p>Hi Silvyu, welcome to our secret love haven a place where every scroll, every animation, and every fluttering heart reflects the infinite love I have for you. Each moment here is crafted with passion, just like our love story.</p>
+    <button class="btn" onclick="scrollToSection('our-story')">Begin Our Journey</button>
   </section>
   
   <!-- Our Story Section -->
   <section id="our-story" class="section" style="animation-delay: 0.4s">
     <h1>Our Beautiful Journey 🌹</h1>
-    <p>From that magical first glance to the promises we share every day, our love story is a masterpiece painted in the hues of passion and trust. Every heartbeat and every smile has built a tapestry of memories I treasure beyond measure.</p>
-    <button class="btn" onclick="scrollToSection('promise-day')">Next: Promise Day</button>
+    <p>From the spark in our eyes during our first encounter to the many unforgettable promises we've shared, our story is a masterpiece of love. Every laugh, every tear, and every heartbeat has led us to this eternal bond.</p>
+    <p>Your love has transformed my world into a realm of magic and wonder - a place where every day feels like a fairytale written just for us.</p>
+    <button class="btn" onclick="scrollToSection('promise-day')">Promise Day</button>
   </section>
   
   <!-- Promise Day Section -->
   <section id="promise-day" class="section" style="animation-delay: 0.6s">
     <h1>Promise Day 💌</h1>
-    <p>Your heartfelt Relationship Contract wasn’t just paper—it was the vow of forever. I signed it with every beat of my heart, promising to cherish, protect, and adore you endlessly. Your promises light up my life like stars in the night sky.</p>
-    <button class="btn" onclick="scrollToSection('hug-day')">Next: Hug Day</button>
+    <p>Your Relationship Contract was more than just a promise..it was a vow of forever. With each word you penned, you lit up my life like the stars illuminate the night sky. I signed it with all my heart, vowing to cherish you beyond time.</p>
+    <p>Every promise you made echoes in my soul, and every pledge I make is a testament to our boundless love.</p>
+    <button class="btn" onclick="scrollToSection('hug-day')">Hug Day</button>
   </section>
   
   <!-- Hug Day Section -->
   <section id="hug-day" class="section" style="animation-delay: 0.8s">
     <h1>Hug Day 🤗</h1>
-    <p>Your "Employee of the Year" award at Tilvyu &amp; Co. melted my soul. Each hug from you feels like the warmest embrace, a sanctuary where your love wraps around me like the softest blanket on a chilly night.</p>
-    <button class="btn" onclick="scrollToSection('kiss-day')">Next: Kiss Day</button>
+    <p>Your award as "Employee of the Year" at Tilvyu &amp; Co. was not just a title..it was a warm embrace from destiny. Every hug from you envelops me in a cocoon of safety, warmth, and love that I never want to let go of.</p>
+    <p>In your arms, I find a home where the world fades away and only our love remains.</p>
+    <button class="btn" onclick="scrollToSection('kiss-day')">Kiss Day</button>
   </section>
   
   <!-- Kiss Day Section -->
   <section id="kiss-day" class="section" style="animation-delay: 1s">
     <h1>Kiss Day 😘</h1>
-    <p>Your Bonus Love Allowance for unlimited kisses is the sweetest promise I've ever received. Every kiss is a spark that ignites the fire of our passion and seals our eternal bond with a tender, loving touch.</p>
-    <button class="btn" onclick="scrollToSection('valentine')">Next: Valentine's Surprise</button>
+    <p>Your Bonus Love Allowance filled my day with the sweetest promises - unlimited kisses, spontaneous smooches, and a lifetime subscription to your love. Every kiss from you ignites a fire within me that burns brighter with each passing moment.</p>
+    <p>Every stolen kiss is a reminder of the passion that binds us, making my heart race and my soul sing.</p>
+    <button class="btn" onclick="scrollToSection('valentine')">Valentine's Surprise</button>
   </section>
   
   <!-- Valentine's Day Section -->
   <section id="valentine" class="section" style="animation-delay: 1.2s">
     <h1>Valentine's Day Surprise 💘</h1>
-    <p>My dearest Silvyu, on this magical Valentine's Day, I had to beat you to it and surprise you first! Even though I may have replied late before, today I am here, overflowing with passion and a love that knows no bounds.</p>
-    <p>You are my irreplaceable queen—lovable, cute, breathtakingly amazing, sexy, and the one I will forever cherish. You are my first and my last, my anchor in every storm, and the joy in every sunrise.</p>
-    <p>Every mail from you fills me with immeasurable gratitude and makes me want to love you even more than yesterday. I promise to be loyal, respect you, care for you, and shower you with love like no one ever has. You are the one my heart beats for, the one who makes me whole, and I cannot imagine a life without you.</p>
-    <button class="btn" onclick="openModal()">Show My Heart 💖</button>
-    <button class="btn" onclick="scrollToSection('home')">Back to Home</button>
+    <p>My dearest Silvyu, on this enchanting Valentine's Day, I had to beat you to it and surprise you first! Though I may have been late before, today I am here-overflowing with a love so deep that words barely capture it.</p>
+    <p>You are my irreplaceable queen-lovable, cute, breathtakingly amazing, sexy, and the only one who completes me. Your every smile lights up my world, and every touch sends shivers down my spine. I promise to be forever loyal, to respect you, care for you, and love you more fiercely than anyone ever could.</p>
+    <p>Every moment we share is a treasure, every promise a pledge to a lifetime of bliss. You are my first and my last, my constant heartbeat, and the love that defines my existence.</p>
+    <button class="btn" onclick="openModal()">Feel My Heart 💖</button>
+  </section>
+  
+  <!-- Forever & Always Section -->
+  <section id="forever" class="section" style="animation-delay: 1.4s">
+    <h1>Forever & Always 🔥</h1>
+    <p>Silvyu, every beat of my heart is a symphony composed solely for you. I cherish the way your laughter fills our days and how your love transforms my darkest moments into radiant light.</p>
+    <p>I vow to stand by you through every storm, to celebrate every joy, and to create memories that will forever adorn the walls of our hearts. With you, life is a beautiful journey that I never want to end.</p>
+    <p>I am utterly, irrevocably in love with you and I promise to prove it every single day.</p>
+    <button class="btn" onclick="openGift()">Get Your Flowers 🎁</button>
+    <button class="btn" onclick="scrollToSection('home')">Return Home</button>
   </section>
   
   <footer>
     <p>&copy; 2025 Tilvyu &amp; Co. | Crafted with endless love by Tithu</p>
   </footer>
   
-  <!-- Modal Popup -->
+  <!-- Existing Modal Popup (Feel My Heart) -->
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h2>My Heart is All Yours 💓</h2>
       <p>Every beat of my heart sings your name and every breath I take is a promise to love you forever. You are my dream come true, my constant joy, and the most precious part of my life.</p>
       <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+  
+  <!-- Gift Modal with Bokeh Flower Bunch & Kiss Animation -->
+  <div id="giftModal" class="gift-modal">
+    <div class="gift-content">
+      <div id="bokehContainer"></div>
+      <div id="messageContainer" class="gift-content">
+        <span class="gift-text">I love u so much, my love</span>
+      </div>
     </div>
   </div>
   
@@ -265,7 +320,7 @@
       showEmojiPopup();
     }
     
-    // Modal Functions
+    // Modal Functions for Feel My Heart
     function openModal() {
       document.getElementById('myModal').style.display = 'flex';
     }
@@ -304,7 +359,7 @@
     
     function drawConfetti() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      confettiParticles.forEach((p, i) => {
+      confettiParticles.forEach((p) => {
         p.tiltAngle += p.tiltAngleIncrement;
         p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
         p.x += Math.sin(p.d);
@@ -350,9 +405,9 @@
       canvas.height = window.innerHeight;
     });
     
-    // Emoji Popup function
+    // Emoji & Heart Popup function
     function showEmojiPopup() {
-      const emojis = ['😍', '😘', '💖', '🌹', '💕', '🥰'];
+      const emojis = ['😍', '😘', '💖', '🌹', '💕', '🥰', '💘'];
       const popup = document.createElement('div');
       popup.classList.add('emoji-popup');
       popup.innerText = emojis[Math.floor(Math.random() * emojis.length)];
@@ -362,6 +417,78 @@
       setTimeout(() => {
         popup.remove();
       }, 3000);
+    }
+    
+    // Extra floating hearts effect on page load
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.innerText = '💖';
+      heart.style.position = 'fixed';
+      heart.style.fontSize = (Math.random() * 1 + 1.5) + 'rem';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = '100vh';
+      heart.style.opacity = 0;
+      heart.style.transform = 'translateY(0)';
+      heart.style.animation = `floatHeart ${randomRange(4, 7)}s linear forwards`;
+      document.body.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+    
+    setInterval(createFloatingHeart, 800);
+    
+    // Gift Modal with Bokeh Flower Bunch & Kiss Animation
+    function openGift() {
+      let giftModal = document.getElementById("giftModal");
+      let bokehContainer = document.getElementById("bokehContainer");
+      let messageContainer = document.getElementById("messageContainer");
+      giftModal.style.display = "flex";
+      
+      // Clear previous bokeh flowers if any
+      bokehContainer.innerHTML = "";
+      
+      // Generate a bunch of flower bokeh elements (using flower emoji 🌸)
+      for (let i = 0; i < 30; i++) {
+        let flower = document.createElement("div");
+        flower.innerText = "🌸";
+        flower.classList.add("bokeh-flower");
+        // Random position within the modal
+        flower.style.left = Math.random() * 80 + "%";
+        flower.style.top = Math.random() * 80 + "%";
+        // Random animation duration for a natural effect
+        flower.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        bokehContainer.appendChild(flower);
+      }
+      
+      // Show bokeh effect for 3 seconds, then show the message
+      setTimeout(() => {
+        bokehContainer.style.display = "none";
+        messageContainer.style.display = "block";
+        // After 3 seconds, hide the gift modal and trigger kiss emoji animation
+        setTimeout(() => {
+          giftModal.style.display = "none";
+          // Trigger kiss emojis
+          for (let i = 0; i < 20; i++) {
+            createKissEmoji();
+          }
+          // Reset bokeh container for next time
+          bokehContainer.style.display = "block";
+        }, 3000);
+      }, 3000);
+    }
+    
+    function createKissEmoji() {
+      let kiss = document.createElement("div");
+      kiss.innerText = "😘";
+      kiss.classList.add("kiss-emoji");
+      kiss.style.left = Math.random() * window.innerWidth + "px";
+      kiss.style.top = "-50px";
+      document.body.appendChild(kiss);
+      kiss.style.animation = "kissFallAnim " + (Math.random() * 2 + 3) + "s linear forwards";
+      setTimeout(() => {
+        kiss.remove();
+      }, 5000);
     }
   </script>
 </body>
